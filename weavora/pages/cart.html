@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart – Ambaji textiles</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/cart.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div class="announcement-bar">🌿 Free shipping on orders above ₹1,299 &nbsp;|&nbsp; Handcrafted by artisans across India</div>
+<header class="site-header">
+  <div class="header-inner">
+    <nav class="header-nav left-nav">
+      <a href="shop.html">Shop</a>
+      <a href="collections.html">Collections</a>
+    </nav>
+    <a href="../index.html" class="logo">
+      <span class="logo-main">Ambaji textiles</span>
+      <span class="logo-sub">Surat, Gujarat</span>
+    </a>
+    <div class="header-actions">
+      <a href="cart.html" class="icon-btn cart-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Cart</span></nav>
+</div>
+
+<div class="cart-layout container">
+  <main class="cart-main">
+    <h1 class="cart-title">Your Cart</h1>
+    <div id="cartItems"></div>
+    <div class="cart-empty" id="cartEmpty" style="display:none">
+      <p>Your cart is empty.</p>
+      <a href="shop.html" class="btn btn-primary" style="margin-top:16px">Start Shopping</a>
+    </div>
+  </main>
+
+  <aside class="cart-summary">
+    <h3>Order Summary</h3>
+    <div class="summary-row">
+      <span>Subtotal</span><span id="subtotal">₹0</span>
+    </div>
+    <div class="summary-row">
+      <span>Shipping</span><span id="shipping">FREE</span>
+    </div>
+    <div class="summary-row promo-row">
+      <input type="text" id="promoInput" placeholder="Promo code" class="promo-input"/>
+      <button onclick="applyPromo()" class="btn btn-outline" style="padding:10px 16px;font-size:13px">Apply</button>
+    </div>
+    <div class="summary-row discount-row" id="discountRow" style="display:none">
+      <span>Discount</span><span id="discountAmt" style="color:#C0392B">-₹0</span>
+    </div>
+    <div class="summary-total">
+      <span>Total</span><span id="total">₹0</span>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="proceedToCheckout()" style="margin-top:20px">Proceed to Checkout</button>
+    <a href="shop.html" class="btn btn-ghost btn-full" style="margin-top:10px">Continue Shopping</a>
+
+    <!-- PAYMENT METHODS INFO -->
+    <div class="payment-methods">
+      <p class="pay-title">We accept</p>
+      <div class="pay-row">
+        <span class="pay-chip">💳 Credit Card</span>
+        <span class="pay-chip">💳 Debit Card</span>
+      </div>
+      <div class="pay-row">
+        <span class="pay-chip">📱 UPI</span>
+        <span class="pay-chip">🟢 PhonePe</span>
+        <span class="pay-chip">🔵 GPay</span>
+      </div>
+      <div class="pay-row">
+        <span class="pay-chip">🏦 Net Banking</span>
+        <span class="pay-chip">📦 Cash on Delivery</span>
+      </div>
+      <div class="pay-row">
+        <span class="pay-chip">💰 EMI Available</span>
+        <span class="pay-chip">🔒 100% Secure</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.1);">
+    <div class="container"><p>@ 2026 Ambaji textiles. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<script src="../js/data.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+let promoDiscount = 0;
+
+function renderCart() {
+  const items = Cart.items;
+  const el = document.getElementById('cartItems');
+  const empty = document.getElementById('cartEmpty');
+  if (!items.length) {
+    el.innerHTML = '';
+    empty.style.display = 'block';
+    updateSummary();
+    return;
+  }
+  empty.style.display = 'none';
+  el.innerHTML = items.map(item => {
+    const p = PRODUCTS.find(x => x.id === item.id);
+    if (!p) return '';
+    return `
+      <div class="cart-item" id="ci-${p.id}">
+        <div class="ci-img">${getSVGForProduct(p)}</div>
+        <div class="ci-details">
+          <p class="ci-name">${p.name}</p>
+          <p class="ci-sub">${p.weave}</p>
+          <div class="ci-controls">
+            <div class="qty-control">
+              <button onclick="updateItem(${p.id}, ${item.qty - 1})">−</button>
+              <span>${item.qty}</span>
+              <button onclick="updateItem(${p.id}, ${item.qty + 1})">+</button>
+            </div>
+            <span class="ci-price">₹${(p.price * item.qty).toLocaleString('en-IN')}</span>
+            <button class="ci-remove" onclick="removeItem(${p.id})">Remove</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  updateSummary();
+}
+
+function updateItem(id, qty) {
+  if (qty <= 0) { Cart.remove(id); } else { Cart.updateQty(id, qty); }
+  renderCart();
+}
+function removeItem(id) { Cart.remove(id); renderCart(); }
+
+function updateSummary() {
+  const sub = Cart.getTotal();
+  const shipping = sub >= 1299 ? 0 : 99;
+  const total = sub + shipping - promoDiscount;
+  document.getElementById('subtotal').textContent = `₹${sub.toLocaleString('en-IN')}`;
+  document.getElementById('shipping').textContent = shipping === 0 ? 'FREE' : `₹${shipping}`;
+  document.getElementById('total').textContent = `₹${Math.max(0, total).toLocaleString('en-IN')}`;
+  if (promoDiscount > 0) {
+    document.getElementById('discountRow').style.display = 'flex';
+    document.getElementById('discountAmt').textContent = `-₹${promoDiscount.toLocaleString('en-IN')}`;
+  }
+}
+
+function applyPromo() {
+  const code = document.getElementById('promoInput').value.trim().toUpperCase();
+  const codes = { 'Ambaji textiles10': 0.10, 'FIRST15': 0.15, 'HANDLOOM20': 0.20 };
+  if (codes[code]) {
+    promoDiscount = Math.floor(Cart.getTotal() * codes[code]);
+    showToast(`Promo applied! ${code} — ${codes[code]*100}% off 🎉`);
+    updateSummary();
+  } else {
+    showToast('Invalid promo code.');
+  }
+}
+
+function proceedToCheckout() {
+  if (!Cart.items.length) { showToast('Your cart is empty!'); return; }
+  window.location.href = 'checkout.html';
+}
+
+document.addEventListener('DOMContentLoaded', renderCart);
+</script>
+</body>
+</html>

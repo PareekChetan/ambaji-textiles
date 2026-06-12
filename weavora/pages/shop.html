@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop All Sarees – Ambaji textiles</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/shop.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="announcement-bar">
+  🌿 Free shipping on orders above ₹1,299 &nbsp;|&nbsp; Handcrafted by artisans across India
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <nav class="header-nav left-nav">
+      <a href="shop.html" class="active">Shop</a>
+      <a href="collections.html">Collections</a>
+      <a href="about.html">Our Story</a>
+    </nav>
+    <a href="../index.html" class="logo">
+      <span class="logo-main">Ambaji textiles</span>
+      <span class="logo-sub">Surat, Gujarat</span>
+    </a>
+    <div class="header-actions">
+      <a href="search.html" class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </a>
+      <a href="wishlist.html" class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </a>
+      <a href="cart.html" class="icon-btn cart-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="container">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Shop</span></nav>
+    <h1>All Sarees</h1>
+    <p>Handwoven by artisans · Shipped from Surat</p>
+  </div>
+</div>
+
+<div class="shop-layout container">
+  <!-- SIDEBAR FILTERS -->
+  <aside class="shop-sidebar">
+    <div class="filter-section">
+      <h4>Category</h4>
+      <div class="filter-options" id="catFilters">
+        <label class="filter-opt">
+          <input type="radio" name="cat" value="all" checked/> All Sarees
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="cat" value="cotton"/> Cotton
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="cat" value="silk"/> Silk
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="cat" value="linen"/> Linen
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="cat" value="banarasi"/> Banarasi
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="cat" value="handblock"/> Hand Block
+        </label>
+      </div>
+    </div>
+    <div class="filter-section">
+      <h4>Price Range</h4>
+      <div class="price-range">
+        <input type="range" id="priceRange" min="0" max="10000" value="10000" step="100" class="range-slider"/>
+        <div class="price-labels">
+          <span>₹0</span>
+          <span id="priceDisplay">₹10,000</span>
+        </div>
+      </div>
+    </div>
+    <div class="filter-section">
+      <h4>Sort By</h4>
+      <select id="sortBy" class="sort-select">
+        <option value="default">Featured</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="new">New Arrivals</option>
+      </select>
+    </div>
+    <button class="btn btn-outline btn-full" onclick="clearFilters()" style="margin-top:8px;">Clear Filters</button>
+  </aside>
+
+  <!-- PRODUCT LISTING -->
+  <main class="shop-main">
+    <div class="shop-toolbar">
+      <p class="result-count" id="resultCount">Showing all 8 sarees</p>
+    </div>
+    <div class="product-grid" id="shopGrid"></div>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <p>@ 2026 Ambaji textiles. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/data.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+  let activeCategory = 'all';
+  let maxPrice = 10000;
+  let sortOrder = 'default';
+
+  function renderShop() {
+    let filtered = [...PRODUCTS];
+    if (activeCategory !== 'all') {
+      filtered = filtered.filter(p => p.tags.includes(activeCategory) || p.category === activeCategory);
+    }
+    filtered = filtered.filter(p => p.price <= maxPrice);
+    if (sortOrder === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+    else if (sortOrder === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+    else if (sortOrder === 'new') filtered = filtered.filter(p => p.badge === 'new').concat(filtered.filter(p => p.badge !== 'new'));
+
+    const grid = document.getElementById('shopGrid');
+    grid.innerHTML = filtered.length ? filtered.map(buildProductCard).join('') : '<p style="padding:40px 0;color:var(--clr-text-muted)">No sarees match your filters. Try adjusting them.</p>';
+    document.getElementById('resultCount').textContent = `Showing ${filtered.length} saree${filtered.length !== 1 ? 's' : ''}`;
+  }
+
+  function clearFilters() {
+    activeCategory = 'all';
+    maxPrice = 10000;
+    sortOrder = 'default';
+    document.querySelectorAll('[name=cat]')[0].checked = true;
+    document.getElementById('priceRange').value = 10000;
+    document.getElementById('priceDisplay').textContent = '₹10,000';
+    document.getElementById('sortBy').value = 'default';
+    renderShop();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check URL param
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('cat')) {
+      activeCategory = params.get('cat');
+      const radio = document.querySelector(`[name=cat][value="${activeCategory}"]`);
+      if (radio) radio.checked = true;
+    }
+    renderShop();
+
+    document.querySelectorAll('[name=cat]').forEach(r => {
+      r.addEventListener('change', e => { activeCategory = e.target.value; renderShop(); });
+    });
+    document.getElementById('priceRange').addEventListener('input', e => {
+      maxPrice = +e.target.value;
+      document.getElementById('priceDisplay').textContent = `₹${(+e.target.value).toLocaleString('en-IN')}`;
+      renderShop();
+    });
+    document.getElementById('sortBy').addEventListener('change', e => { sortOrder = e.target.value; renderShop(); });
+  });
+</script>
+</body>
+</html>
