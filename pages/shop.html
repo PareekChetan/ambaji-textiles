@@ -99,8 +99,17 @@
   <!-- PRODUCT LISTING -->
   <main class="shop-main">
     <div class="shop-toolbar">
-      <p class="result-count" id="resultCount">Showing all 8 sarees</p>
-    </div>
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search silk, cotton, jacquard..."
+    style="padding:12px;width:300px;border:1px solid #ddd;border-radius:6px;"
+  >
+
+  <p class="result-count" id="resultCount">
+    Showing all 8 sarees
+  </p>
+</div>
     <div class="product-grid" id="shopGrid"></div>
   </main>
 </div>
@@ -118,23 +127,53 @@
 <script src="../js/cart.js"></script>
 <script>
   let activeCategory = 'all';
-  let maxPrice = 10000;
-  let sortOrder = 'default';
+let maxPrice = 10000;
+let sortOrder = 'default';
+let searchQuery = '';
 
-  function renderShop() {
-    let filtered = [...PRODUCTS];
-    if (activeCategory !== 'all') {
-      filtered = filtered.filter(p => p.tags.includes(activeCategory) || p.category === activeCategory);
-    }
-    filtered = filtered.filter(p => p.price <= maxPrice);
-    if (sortOrder === 'price-asc') filtered.sort((a, b) => a.price - b.price);
-    else if (sortOrder === 'price-desc') filtered.sort((a, b) => b.price - a.price);
-    else if (sortOrder === 'new') filtered = filtered.filter(p => p.badge === 'new').concat(filtered.filter(p => p.badge !== 'new'));
+function renderShop() {
+  let filtered = [...PRODUCTS];
 
-    const grid = document.getElementById('shopGrid');
-    grid.innerHTML = filtered.length ? filtered.map(buildProductCard).join('') : '<p style="padding:40px 0;color:var(--clr-text-muted)">No sarees match your filters. Try adjusting them.</p>';
-    document.getElementById('resultCount').textContent = `Showing ${filtered.length} saree${filtered.length !== 1 ? 's' : ''}`;
+  // Search
+  if (searchQuery) {
+    filtered = filtered.filter(p =>
+      p.name.toLowerCase().includes(searchQuery) ||
+      p.category.toLowerCase().includes(searchQuery) ||
+      p.description.toLowerCase().includes(searchQuery) ||
+      p.tags.join(' ').toLowerCase().includes(searchQuery)
+    );
   }
+
+  // Category filter
+  if (activeCategory !== 'all') {
+    filtered = filtered.filter(
+      p => p.tags.includes(activeCategory) || p.category === activeCategory
+    );
+  }
+
+  // Price filter
+  filtered = filtered.filter(p => p.price <= maxPrice);
+
+  // Sorting
+  if (sortOrder === 'price-asc') {
+    filtered.sort((a, b) => a.price - b.price);
+  } else if (sortOrder === 'price-desc') {
+    filtered.sort((a, b) => b.price - a.price);
+  } else if (sortOrder === 'new') {
+    filtered = filtered
+      .filter(p => p.badge === 'new')
+      .concat(filtered.filter(p => p.badge !== 'new'));
+  }
+
+  const grid = document.getElementById('shopGrid');
+
+  grid.innerHTML = filtered.length
+    ? filtered.map(buildProductCard).join('')
+    : '<p style="padding:40px 0;color:var(--clr-text-muted)">No sarees found.</p>';
+
+  document.getElementById('resultCount').textContent =
+    `Showing ${filtered.length} saree${filtered.length !== 1 ? 's' : ''}`;
+}
 
   function clearFilters() {
     activeCategory = 'all';
@@ -156,7 +195,14 @@
       if (radio) radio.checked = true;
     }
     renderShop();
+    const searchInput = document.getElementById('searchInput');
 
+if (searchInput) {
+  searchInput.addEventListener('input', function (e) {
+    searchQuery = e.target.value.toLowerCase();
+    renderShop();
+  });
+}
     document.querySelectorAll('[name=cat]').forEach(r => {
       r.addEventListener('change', e => { activeCategory = e.target.value; renderShop(); });
     });
@@ -166,6 +212,7 @@
       renderShop();
     });
     document.getElementById('sortBy').addEventListener('change', e => { sortOrder = e.target.value; renderShop(); });
+  
   });
 </script>
 </body>
