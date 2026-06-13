@@ -28,7 +28,7 @@ const PRODUCTS = [
   name: "Linen cotton ",
   weave: "Pure Cotton · India",
   price: 500,
-  originalPrice: 10000,
+  originalPrice: 1000,
   badge: "sale",
   category: "cotton",
   tags: ["cotton", "sale"],
