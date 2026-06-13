@@ -122,55 +122,76 @@ const PRODUCTS = [
 },
   {
     id: 6,
-    name: "Midnight Kalamkari Silk",
-    weave: "Pen Kalamkari · Srikalahasti",
-    price: 4199,
-    originalPrice: null,
-    badge: null,
+    name: "Silk Jacquard Saree",
+    weave: "Silk Jacquard · India",
+    price: 1000,
+    originalPrice: 2500,
+    badge: "sale",
     category: "silk",
-    tags: ["silk", "handblock"],
-    description: "Hand-painted pen Kalamkari on charcoal silk. Each motif — peacocks, vines, temple pillars — is drawn freehand by master craftspeople in Andhra Pradesh.",
-    details: ["Fabric: Raw Silk", "Length: 5.5 metres + 80cm blouse piece", "Wash Care: Dry clean recommended", "Technique: Pen Kalamkari (hand-painted)"],
-    images: ["img6"],
-    color: "#1C1C3A",
-    gradient: "linear-gradient(135deg, #1C1C3A 0%, #34344E 60%, #C4956A 100%)",
+    tags: ["silk", "jacquard", "sale"],
+
+    description: "Elegant Silk Jacquard saree featuring rich woven patterns and a luxurious finish. Perfect for festive occasions, weddings, and special celebrations.",
+
+    details: [
+        "Fabric: Silk Jacquard",
+        "Length: 6.30 metres + blouse piece",
+        "Wash Care: Dry Clean Only",
+        "Occasion: Festive & Party Wear"
+    ],
+
+    images: ["images/silk3.jpg"],
+
     inStock: true,
     bestseller: true
-  },
+},
   {
     id: 7,
-    name: "Blush Mul Mul Cotton",
-    weave: "Mul Mul · Rajasthan",
-    price: 1299,
-    originalPrice: null,
-    badge: "new",
-    category: "cotton",
-    tags: ["cotton", "new"],
-    description: "Feather-soft mul mul cotton in dusky blush with a hand block border in terracotta. So light it feels like wearing a cloud.",
-    details: ["Fabric: Double-thread Mul Mul Cotton", "Length: 5.5 metres + 80cm blouse piece", "Wash Care: Machine wash, cold", "Dye: Azo-free"],
-    images: ["img7"],
-    color: "#D4A0A0",
-    gradient: "linear-gradient(135deg, #D4A0A0 0%, #C47A7A 100%)",
+    name: "Silk Jacquard Saree",
+    weave: "Silk Jacquard · India",
+    price: 1000,
+    originalPrice: 2500,
+    badge: "sale",
+    category: "silk",
+    tags: ["silk", "jacquard", "sale"],
+
+    description: "Elegant Silk Jacquard saree crafted with intricate woven patterns and a rich texture. Designed for festive occasions, weddings, and celebrations while offering a luxurious look at an affordable price.",
+
+    details: [
+        "Fabric: Silk Jacquard",
+        "Length: 6.30 metres + blouse piece",
+        "Wash Care: Dry Clean Only",
+        "Occasion: Festive & Party Wear"
+    ],
+
+    images: ["images/silk4.jpg"],
+
     inStock: true,
     bestseller: true
-  },
-  {
+},
+ {
     id: 8,
-    name: "Forest Green Maheshwari",
-    weave: "Handloom Maheshwari · Madhya Pradesh",
-    price: 2899,
-    originalPrice: null,
-    badge: null,
+    name: "Silk Jacquard Saree",
+    weave: "Silk Jacquard · India",
+    price: 1000,
+    originalPrice: 2500,
+    badge: "sale",
     category: "silk",
-    tags: ["silk", "chanderi"],
-    description: "Reversible silk-cotton Maheshwari with characteristic temple border in gold. The weave is so fine it catches light at every angle.",
-    details: ["Fabric: Silk-Cotton Maheshwari", "Length: 5.5 metres + 80cm blouse piece", "Wash Care: Gentle machine wash", "Weave: Handloom"],
-    images: ["img8"],
-    color: "#1B4D2E",
-    gradient: "linear-gradient(135deg, #1B4D2E 0%, #2E7D52 100%)",
+    tags: ["silk", "jacquard", "sale"],
+
+    description: "Elegant Silk Jacquard saree crafted with intricate woven patterns and a luxurious texture. Ideal for festive occasions, weddings, parties, and traditional celebrations.",
+
+    details: [
+        "Fabric: Silk Jacquard",
+        "Length: 6.30 metres + blouse piece",
+        "Wash Care: Dry Clean Only",
+        "Occasion: Festive & Party Wear"
+    ],
+
+    images: ["images/silk5.jpg"],
+
     inStock: true,
     bestseller: false
-  },
+},
 
 ];
 // Colour swatches for filter
